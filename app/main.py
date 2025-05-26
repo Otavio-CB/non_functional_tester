@@ -1,0 +1,55 @@
+import asyncio
+
+from fastapi import FastAPI, BackgroundTasks
+
+from app.core.performance_tester import PerformanceTester
+from app.core.stress_tester import StressTester
+from app.models.config import TestConfig
+from app.storage.memory_storage import MemoryStorage
+
+app = FastAPI()
+storage = MemoryStorage()
+
+
+async def _run_tester(tester):
+    """Common function to run tests and monitor resources."""
+    monitor_task = asyncio.create_task(tester._monitor_resources())
+    result = await tester.run()
+    tester.monitoring = False
+    await monitor_task
+    return result
+
+
+def _setup_test(tester, background_tasks: BackgroundTasks):
+    """Common setup for both test types."""
+    test_id = tester.test_id
+    storage.save(test_id, tester.test_result)
+
+    async def run_and_save():
+        result = await _run_tester(tester)
+        storage.save(test_id, result)
+
+    background_tasks.add_task(run_and_save)
+    return tester.test_result
+
+
+@app.post("/stress-test")
+async def run_stress_test(config: TestConfig, background_tasks: BackgroundTasks):
+    tester = StressTester(config)
+    return _setup_test(tester, background_tasks)
+
+
+@app.post("/performance-test")
+async def run_performance_test(config: TestConfig, background_tasks: BackgroundTasks):
+    tester = PerformanceTester(config)
+    return _setup_test(tester, background_tasks)
+
+
+@app.get("/test-results/{test_id}")
+async def get_test_result(test_id: str):
+    return storage.get(test_id) or {"error": "Test not found"}
+
+
+@app.get("/test-results")
+async def list_test_results():
+    return storage.get_all()
