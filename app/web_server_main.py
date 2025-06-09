@@ -2,10 +2,10 @@ import asyncio
 
 from fastapi import FastAPI, BackgroundTasks
 
-from app.core.performance_tester import PerformanceTester
-from app.core.stress_tester import StressTester
-from app.models.config import TestConfig
-from app.storage.memory_storage import MemoryStorage
+from app.web_server.core.performance_tester import PerformanceTester
+from app.web_server.core.stress_tester import StressTester
+from app.web_server.models.config import TestConfig
+from app.web_server.storage.memory_storage import MemoryStorage
 
 app = FastAPI()
 storage = MemoryStorage()
@@ -62,4 +62,4 @@ async def get_resource_stats(test_id: str):
         return {"error": "Test not found"}
 
     return {"resource_stats": test_result.resource_stats if test_result.resource_stats else [],
-        "resource_metrics": test_result.resource_metrics if test_result.resource_metrics else {}}
+            "resource_metrics": test_result.resource_metrics if test_result.resource_metrics else {}}
