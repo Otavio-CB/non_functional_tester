@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 
 class TestResult(BaseModel):
+    """Model representing the complete results of a performance or stress test"""
     test_id: str
     test_type: str
     start_time: datetime

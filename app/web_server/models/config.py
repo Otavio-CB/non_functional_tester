@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class TestConfig(BaseModel):
+    """Configuration model for performance and stress tests"""
     target_url: str
     requests: int = 100
     concurrency: int = 10

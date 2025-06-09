@@ -3,10 +3,11 @@ from datetime import datetime
 
 import httpx
 
-from app.core.base_tester import BaseTester
+from app.web_server.core.base_tester import BaseTester
 
 
 class StressTester(BaseTester):
+    """Stress tester that executes a fixed number of requests with controlled concurrency"""
     async def run(self):
         self.start_time = datetime.now()
 

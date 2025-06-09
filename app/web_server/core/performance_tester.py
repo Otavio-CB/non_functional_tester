@@ -1,13 +1,14 @@
+import asyncio
 import time
 from datetime import datetime
 
-import asyncio
 import httpx
 
-from app.core.base_tester import BaseTester
+from app.web_server.core.base_tester import BaseTester
 
 
 class PerformanceTester(BaseTester):
+    """Performance tester that executes concurrent requests for a specified duration"""
     async def run(self):
         if not self.config.duration:
             raise ValueError("Duration is required for performance testing")
