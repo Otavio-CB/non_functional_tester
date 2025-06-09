@@ -46,7 +46,7 @@ class BaseTester:
             self.results.append({"status_code": None, "response_time": None, "success": False, "error": str(e)})
             return False, 0
 
-    async def _monitor_resources(self, interval: float = 1.0):
+    async def monitor_resources(self, interval: float = 1.0):
         """Background task to monitor system resources during the test"""
         while self.monitoring:
             stats = {'timestamp': datetime.now().isoformat(), 'cpu_percent': psutil.cpu_percent(),

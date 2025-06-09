@@ -13,7 +13,7 @@ storage = MemoryStorage()
 
 async def _run_tester(tester):
     """Common function to run tests and monitor resources."""
-    monitor_task = asyncio.create_task(tester._monitor_resources())
+    monitor_task = asyncio.create_task(tester.monitor_resources())
     result = await tester.run()
     tester.monitoring = False
     await monitor_task
