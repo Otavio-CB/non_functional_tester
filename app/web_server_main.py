@@ -53,3 +53,13 @@ async def get_test_result(test_id: str):
 @app.get("/test-results")
 async def list_test_results():
     return storage.get_all()
+
+
+@app.get("/resource-stats/{test_id}")
+async def get_resource_stats(test_id: str):
+    test_result = storage.get(test_id)
+    if not test_result:
+        return {"error": "Test not found"}
+
+    return {"resource_stats": test_result.resource_stats if test_result.resource_stats else [],
+        "resource_metrics": test_result.resource_metrics if test_result.resource_metrics else {}}

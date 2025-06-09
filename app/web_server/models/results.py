@@ -19,4 +19,5 @@ class TestResult(BaseModel):
     requests_per_second: float
     status: str = "running"
     errors: Optional[List[str]] = None
+    resource_stats: Optional[List[Dict]] = None
     resource_metrics: Optional[Dict] = None
