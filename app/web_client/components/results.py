@@ -20,9 +20,6 @@ def display_test_results(test_data: dict):
     with tab2:
         display_resource_usage(test_data)
 
-    with st.expander("📄 Raw Test Data"):
-        st.json(test_data)
-
 
 def display_response_times(test_data: dict):
     """Display response times metrics"""
